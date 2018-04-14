@@ -2,7 +2,7 @@
 """
 Created on Fri Apr 13 10:14:24 2018
 
-@author: abrahao de weber
+@author: andre de weber
 """
 #Escolhas
 print("0 - sair")
