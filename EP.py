@@ -2,8 +2,9 @@
 """
 Created on Fri Apr 13 10:14:24 2018
 
-@author: andre de weber
+@author: abrahao de weber
 """
+import json
 #Escolhas
 print("0 - sair")
 print("1 - adicionar item")
@@ -83,6 +84,12 @@ while menu != "0":
     #Escolha 0 - sair
     if menu == "0":
         print("Até mais")
+    with open("arquivoEP.txt", "r") as arquivo:
+        conteudo = arquivo.read
+    texto = json.dumps(estoque, sort_keys = True, indent = 4)
+    with open("arquivoEP.txt", "w") as arquivo:
+        conteudo = arquivo.write(texto)
+
         
                 
                 
