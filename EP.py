@@ -5,6 +5,25 @@ Created on Fri Apr 13 10:14:24 2018
 @author: abrahao de weber
 """
 import json
+#Escolhas lojas
+print("0 - sair")
+print("1 - adicionar loja")
+print("2 - remover loja")
+print("3 - imprimir loja")
+
+cardapio = input("Faça sua escolha: ")
+lojas = {}
+
+if cardapio == "0":
+    print("Até mais")
+
+while cardapio != "0":
+    if cardapio == "1":
+        while cardapio == "1":
+            nomeloja = input("Nome da loja a adicionar:")
+            if nomeloja in lojas:
+                print("loja já cadastrada")
+                cardapio = input("Faça sua escolha: ")
 #Escolhas
 print("0 - sair")
 print("1 - adicionar item")
