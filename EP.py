@@ -20,10 +20,21 @@ if cardapio == "0":
 while cardapio != "0":
     if cardapio == "1":
         while cardapio == "1":
-            nomeloja = input("Nome da loja a adicionar:")
-            if nomeloja in lojas:
-                print("loja já cadastrada")
-                cardapio = input("Faça sua escolha: ")
+            nomedaloja = input("Digite uma loja: ")
+            if nomedaloja in lojas:
+                print("nome da loja já está cadastrada")
+                cardapio = input("Faça sua escolha do cardapio: ")
+            while nomedaloja not in lojas:
+                lojas = [nomedaloja]
+if cardapio == "2":
+    while cardapio == "2":
+        nomedaloja = input("digite a loja que deseja remover:")
+        if nomedaloja in lojas:
+            del[loja[nomedaloja]
+        else: 
+            nomedaloja not in lojas
+            print("loja deletada")
+            cardapio = input("faça sua escolha do cardapio")                
 #Escolhas
 print("0 - sair")
 print("1 - adicionar item")
