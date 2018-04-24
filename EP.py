@@ -5,36 +5,6 @@ Created on Fri Apr 13 10:14:24 2018
 @author: abrahao de weber
 """
 import json
-#Escolhas lojas
-print("0 - sair")
-print("1 - adicionar loja")
-print("2 - remover loja")
-print("3 - imprimir loja")
-
-cardapio = input("Faça sua escolha: ")
-lojas = {}
-
-if cardapio == "0":
-    print("Até mais")
-
-while cardapio != "0":
-    if cardapio == "1":
-        while cardapio == "1":
-            nomedaloja = input("Digite uma loja: ")
-            if nomedaloja in lojas:
-                print("nome da loja já está cadastrada")
-                cardapio = input("Faça sua escolha do cardapio: ")
-            while nomedaloja not in lojas:
-                lojas = [nomedaloja]
-if cardapio == "2":
-    while cardapio == "2":
-        nomedaloja = input("digite a loja que deseja remover:")
-        if nomedaloja in lojas:
-            del[loja[nomedaloja]
-        else: 
-            nomedaloja not in lojas
-            print("loja deletada")
-            cardapio = input("faça sua escolha do cardapio")                
 #Escolhas
 print("0 - sair")
 print("1 - adicionar item")
@@ -42,16 +12,16 @@ print("2 - remover item")
 print("3 - alterar item")
 print("4 - imprimir estoque")
 menu = input("Faça sua escolha: ")
-
+ 
 estoque = {}
 with open("arquivo.txt", "r") as arquivo:
         estoque = json.loads(arquivo.read())
-
-
+ 
+ 
 #Escolha 0 - sair
 if menu == "0":
     print("Até mais")
-
+ 
 while menu != "0":
     #Escolha 1 - adicionar item
     if menu == "1":
@@ -63,13 +33,10 @@ while menu != "0":
             while produto not in estoque:
                 quantidade1 = int(input("Digite a quantidade de produto: "))
                 preco = float(input("Digite um preço por unidade para o produto: "))
-                while quantidade1 < 0:
-                    print("A quantidade não pode ser negativa")
-                    quantidade1 = int(input("Digite a quantidade de produto: "))
                 while preco < 0:
                     print("O preço não pode ser negativo")
                     preco = float(input("Digite um preço por unidade para o produto: "))
-                if quantidade1 > 0 and preco > 0:
+                if preco > 0:
                     quant_prod = {}
                     quant_prod['quantidade'] = quantidade1
                     quant_prod['preco'] = preco
@@ -97,19 +64,10 @@ while menu != "0":
             valor = int(input("Digite a quantidade a ser somada: "))
             preco = float(input("Digite o preço a ser somado: "))
             if produto in estoque:
-                if valor < 0 or preco < 0:
-                    while estoque[produto]['quantidade'] + valor < 0:
-                        print("Quantidade final não pode ser negativa")
-                        valor = int(input("Digite a quantidade a ser somada: "))
-                    if estoque[produto]['quantidade'] + valor >= 0:
-                        estoque[produto]['quantidade'] += valor
+                if preco < 0:
                     while estoque[produto]['preco'] + preco < 0:
                         print("Preço final não pode ser negativo")
                         preco = float(input("Digite o preço a ser somado: "))
-                    if estoque[produto]['preco'] + preco >= 0:
-                        estoque[produto]['preco'] += preco
-                        print("O produto {0} passa a ter {1} itens ao valor de {2} reais cada, totalizando {3} reais".format(produto,estoque[produto]['quantidade'],estoque[produto]['preco'],estoque[produto]['preco']*estoque[produto]['quantidade']))
-                        menu = input("Faça sua escolha do menu: ")
                 else:
                     estoque[produto]['quantidade'] += valor
                     estoque[produto]['preco'] += preco
@@ -122,11 +80,27 @@ while menu != "0":
     if menu == "4":
         soma_quant = 0
         soma_preco = 0
+        print("0 - imprimir todo estoque")
+        print("1 - imprimir apenas estoque positivo")
+        print("2 - imprimir apenas estoque negativo")
+        submain = input("Digite sua escolha para imprimir o estoque: ")
         for e in estoque:
-            soma_quant += estoque[e]['quantidade']
-            soma_preco += estoque[e]['preco']*estoque[e]['quantidade']
-            print("{0}: {1}: {2}".format(e, estoque[e]['quantidade'],estoque[e]['preco']))
+            if submain == "0":
+                soma_quant += estoque[e]['quantidade']
+                soma_preco += estoque[e]['preco']*estoque[e]['quantidade']
+                print("{0}: {1}: {2}".format(e, estoque[e]['quantidade'],estoque[e]['preco']))
+            if submain == "1":
+                if estoque[e]['quantidade'] >= 0:
+                    soma_quant += estoque[e]['quantidade']
+                    soma_preco += estoque[e]['preco'] * estoque[e]['quantidade']
+                    print("{0}: {1}: {2}".format(e, estoque[e]['quantidade'],estoque[e]['preco']))
+            if submain == "2":
+                if estoque[e]['quantidade'] < 0:
+                    soma_quant += estoque[e]['quantidade']
+                    soma_preco += estoque[e]['preco'] * estoque[e]['quantidade']
+                    print("{0}: {1}: {2}".format(e, estoque[e]['quantidade'],estoque[e]['preco']))
         print("A quantidade total do carrinho é de {0} itens e o preço total é de {1} reais".format(soma_quant,soma_preco))
+                    
         menu = input("Faça sua escolha do menu: ")
     #Escolha 0 - sair
     if menu == "0":
