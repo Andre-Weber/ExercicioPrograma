@@ -207,7 +207,41 @@ try:
             print("1 - adicionar loja")
             print("2 - remover loja")
             print("3 - imprimir loja")
+            print("4 - editar loja")
             cardapio = input("Faça escolha:")
+         #editar loja - opção - 4
+        if cardapio == "4":
+            while cardapio == "4":
+                nomeloja = input("Digite o nome da loja a ser alterada: ")
+                if nomeloja in lojas:
+                    alterar = input("Deseja alterar um produto da loja ou criar um novo? (alterar ou novo): ")
+                    if alterar == "alterar":
+                        produto = input("Digite um produto a ser alterado: ")
+                        if produto not in lojas[nomeloja]:
+                            print("Produto inexistente")
+                            
+                        else:
+                            quantidade = input("Digite uma quantidade a ser somada: ")
+                            preco = input("Digite um preco a ser somado: ")
+                            while lojas[nomeloja][produto]['preco'] + preco < 0:
+                                print("Preço total do produto não pode ser negativo.")
+                                preco = input("Digite outro preço a ser somado: ")
+                            if lojas[nomeloja][produto]['preco'] + preco > 0:
+                                lojas[nomeloja][produto]['preco'] += preco
+                                lojas[nomeloja][produto]['quantidade'] += quantidade
+                                lojas[nomeloja][produto]['total'] = lojas[nomeloja][produto]['preco'] * lojas[nomeloja][produto]['quantidade']
+                                
+                    if alterar == "novo":
+                        produto = input("Digite o nome de um produto a ser adicionado: ")
+                        preco = input("Digite o preço do produto: ")
+                        quantidade = input("Digite a quantidade do produto: ")
+                        estoque = {}
+                        quant_prod = {}
+                        quant_prod['preco'] = preco
+                        quant_prod['quantidade'] = quantidade
+                        quant_prod['total'] = preco*quantidade
+                        estoque[produto] = quant_prod
+                        lojas[nomeloja] = estoque
             
         # Sair - Opção - 0
         if cardapio == "0":
