@@ -54,6 +54,11 @@ try:
                                 produto = input("Digite um produto: ")
                                 if produto in estoque:
                                     print("Produto já está cadastrado")
+                                    print("0 - sair")
+                                    print("1 - adicionar item")
+                                    print("2 - remover item")
+                                    print("3 - alterar item")
+                                    print("4 - imprimir estoque")
                                     menu = input("Faça sua escolha do menu: ")
                                 while produto not in estoque:
                                     quantidade1 = int(input("Digite a quantidade de produto: "))
@@ -84,6 +89,11 @@ try:
                                 if produto in estoque:
                                     del[estoque[produto]]
                                     print("Produto {0} deletado.".format(produto))
+                                    print("0 - sair")
+                                    print("1 - adicionar item")
+                                    print("2 - remover item")
+                                    print("3 - alterar item")
+                                    print("4 - imprimir estoque")
                                     menu = input("Faça sua escolha do menu: ")
                                 else:
                                     print("Elemento não encontrado")
@@ -109,9 +119,19 @@ try:
                                         estoque[produto]['quantidade'] += valor
                                         estoque[produto]['preco'] += preco
                                         print("O produto {0} passa a ter {1} itens ao valor de {2} reais cada, totalizando {3} reais".format(produto, estoque[produto]['quantidade'],estoque[produto]['preco'],estoque[produto]['quantidade']*estoque[produto]['preco']))
+                                        print("0 - sair")
+                                        print("1 - adicionar item")
+                                        print("2 - remover item")
+                                        print("3 - alterar item")
+                                        print("4 - imprimir estoque")
                                         menu = input("Faça sua escolha do menu: ")
                                 else:
                                     print("Elemento não encontrado")
+                                    print("0 - sair")
+                                    print("1 - adicionar item")
+                                    print("2 - remover item")
+                                    print("3 - alterar item")
+                                    print("4 - imprimir estoque")
                                     menu = input("Faça sua escolha do menu: ")
                         #Escolha 4 - imprimir estoque
                         if menu == "4":
@@ -167,18 +187,34 @@ try:
                 if nomeloja in lojas:
                     del[lojas[nomeloja]]
                     print("Loja {0} deletado".format(nomeloja))
+                    print("0 - sair")
+                    print("1 - adicionar loja")
+                    print("2 - remover loja")
+                    print("3 - imprimir loja")
                     cardapio = input("Faça uma escolha: ")
                 else:
                     print("Loja não encontrada")
+                    print("0 - sair")
+                    print("1 - adicionar loja")
+                    print("2 - remover loja")
+                    print("3 - imprimir loja")
                     cardapio = input("Faça uma escolha: ")
     
         # Imprimir Lojas - Opção3
         if cardapio == "3":
             print(lojas)
+            print("0 - sair")
+            print("1 - adicionar loja")
+            print("2 - remover loja")
+            print("3 - imprimir loja")
             cardapio = input("Faça escolha:")
             
         # Sair - Opção - 0
         if cardapio == "0":
+            print("0 - sair")
+            print("1 - adicionar loja")
+            print("2 - remover loja")
+            print("3 - imprimir loja")
             print("Até mais")
 except:
     print("Algo errado!!")
