@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Created on Fri Apr 13 10:14:24 2018
-
 @author: abrahao de weber
 """
 from firebase import firebase
 firebase = firebase.FirebaseApplication("https://ep-dsoft-6cc2f.firebaseio.com/",None)
-lojas = firebase.get("",None)
+if firebase.get("Estoque", None) is None:
+    lojas = {}
+else:
+    lojas = firebase.get("Estoque", None)
 
 #Escolhas lojas
 print("0 - sair")
@@ -43,12 +46,13 @@ while cardapio != "0":
                 print("2 - remover item")
                 print("3 - alterar item")
                 print("4 - imprimir estoque")
-    
                 menu = input("Faça sua escolha: ")
                 
-                estoque = {}     
+                estoque = {}  
+                lojas[nomeloja] = {}
                 #Escolha 0 - sair
                 if menu == "0":
+                    lojas[nomeloja] = {}
                     print("Até mais")
                     print("0 - sair")
                     print("1 - adicionar loja")
@@ -62,7 +66,7 @@ while cardapio != "0":
                     if menu == "1":
                         while menu == "1":
                             produto = input("Digite um produto: ")
-                            if produto in estoque:
+                            if produto in lojas[nomeloja]:
                                 print("Produto já está cadastrado")
                                 print("0 - sair")
                                 print("1 - adicionar item")
@@ -70,27 +74,24 @@ while cardapio != "0":
                                 print("3 - alterar item")
                                 print("4 - imprimir estoque")
                                 menu = input("Faça sua escolha do menu: ")
-                            while produto not in estoque:
+                            while produto not in lojas[nomeloja]:
+                                lojas[nomeloja][produto] = {}
                                 quantidade1 = int(input("Digite a quantidade de produto: "))
                                 preco = float(input("Digite um preço por unidade para o produto: "))
                                 while preco < 0:
                                     print("O preço não pode ser negativo")
                                     preco = float(input("Digite um preço por unidade para o produto: "))
                                 if preco > 0:
-                                    quant_prod = {}
-                                    quant_prod['quantidade'] = quantidade1
-                                    quant_prod['preco'] = preco
-                                    quant_prod['total'] = quantidade1*preco
-                                    estoque[produto] = quant_prod
+                                    lojas[nomeloja][produto]['quantidade'] = quantidade1
+                                    lojas[nomeloja][produto]['preco'] = preco
+                                    lojas[nomeloja][produto]['total'] = quantidade1*preco
                                     print("Produto {0} adicionado com uma quantidade de {1} e preço de {2} reais por {0}, totalizando {3} reais deste produto.".format(produto,quantidade1,preco,quantidade1*preco)) 
                                     print("0 - sair")
                                     print("1 - adicionar item")
-                                    print("2 - remover item")
-                                    print("3 - alterar item")
                                     print("4 - imprimir estoque")
                                     menu = input("Faça sua escolha do menu: ")
                                     
-                    lojas[nomeloja] = estoque
+                    
                     
                     #Escolha 2 - remover item
                     if menu == "2":
@@ -153,26 +154,24 @@ while cardapio != "0":
                         print("1 - imprimir apenas estoque positivo")
                         print("2 - imprimir apenas estoque negativo")
                         submain = input("Digite sua escolha para imprimir o estoque: ")
-                        for e in estoque: 
+                        for e in lojas[nomeloja]: 
                             if submain == "0":
-                                soma_quant += estoque[e]['quantidade'] 
-                                soma_preco += estoque[e]['preco']*estoque[e]['quantidade'] 
-                                print("{0}: {1}: {2}".format(e, estoque[e]['quantidade'],estoque[e]['preco'])) 
+                                soma_quant += lojas[nomeloja][e]['quantidade'] 
+                                soma_preco += lojas[nomeloja][e]['preco']*lojas[nomeloja][e]['quantidade'] 
+                                print("{0}: {1}: {2}".format(e, lojas[nomeloja][e]['quantidade'],lojas[nomeloja][e]['preco'])) 
                             if submain == "1":
-                                if estoque[e]['quantidade'] >= 0: 
-                                    soma_quant += estoque[e]['quantidade'] 
-                                    soma_preco += estoque[e]['preco'] * estoque[e]['quantidade'] 
-                                    print("{0}: {1}: {2}".format(e, estoque[e]['quantidade'],estoque[e]['preco'])) 
+                                if lojas[nomeloja][e]['quantidade'] >= 0: 
+                                    soma_quant += lojas[nomeloja][e]['quantidade'] 
+                                    soma_preco += lojas[nomeloja][e]['preco'] * lojas[nomeloja][e]['quantidade'] 
+                                    print("{0}: {1}: {2}".format(e, lojas[nomeloja][e]['quantidade'],lojas[nomeloja][e]['preco'])) 
                             if submain == "2":
-                                if estoque[e]['quantidade'] < 0: 
-                                    soma_quant += estoque[e]['quantidade'] 
-                                    soma_preco += estoque[e]['preco'] * estoque[e]['quantidade'] 
-                                    print("{0}: {1}: {2}".format(e, estoque[e]['quantidade'],estoque[e]['preco']))
+                                if lojas[nomeloja][e]['quantidade'] < 0: 
+                                    soma_quant += lojas[nomeloja][e]['quantidade'] 
+                                    soma_preco += lojas[nomeloja][e]['preco'] * lojas[nomeloja][e]['quantidade'] 
+                                    print("{0}: {1}: {2}".format(e, lojas[nomeloja][e]['quantidade'],lojas[nomeloja][e]['preco']))
                         print("A quantidade total do carrinho é de {0} itens e o preço total é de {1} reais".format(soma_quant,soma_preco))
                         print("0 - sair")
                         print("1 - adicionar item")
-                        print("2 - remover item")
-                        print("3 - alterar item")
                         print("4 - imprimir estoque")            
                         menu = input("Faça sua escolha do menu: ")
                         
@@ -190,7 +189,8 @@ while cardapio != "0":
         while cardapio == "2":
             nomeloja = input("Digite o nome da loja a ser removida: ")
             if nomeloja in lojas:
-                del[lojas[nomeloja]]
+                del lojas[nomeloja]
+                firebase.delete("Estoque", nomeloja)
                 print(nomeloja)
                 print("Loja {0} deletado".format(nomeloja))
                 cardapio = input("Faça uma escolha: ")
@@ -205,25 +205,30 @@ while cardapio != "0":
 
     # Imprimir Lojas - Opção 3
     if cardapio == "3":
-        print(lojas)
+        nomeloja = input("Nome da loja: ")
+        if nomeloja in lojas:
+            print(lojas[nomeloja])
+        else:
+            print("Loja inexistente")
         print("0 - sair")
         print("1 - adicionar loja")
         print("2 - remover loja")
         print("3 - imprimir loja")
         print("4 - editar loja")
-        cardapio = input("Faça escolha:")
+        cardapio = input("Faça escolha: ")
     
     # Editar Loja - Opção 4   
     if cardapio == "4":
         while cardapio == "4":
-            print("0 - sair")
-            print("1 - adicionar item")
-            print("2 - remover item")
-            print("3 - alterar item")
-            print("4 - imprimir estoque")
-            menu = input("Faça sua escolha do menu: ")
+                
             nomeloja = input("Digite o nome da loja a ser alterada: ")
             if nomeloja in lojas:
+                print("0 - sair")
+                print("1 - adicionar item")
+                print("2 - remover item")
+                print("3 - alterar item")
+                print("4 - imprimir estoque")
+                menu = input("Faça sua escolha do menu: ")
                 while menu != "0":
                      
                     #Escolha 1 - adicionar item
@@ -239,6 +244,13 @@ while cardapio != "0":
                                 print("3 - alterar item")
                                 print("4 - imprimir estoque")
                                 menu = input("Faça sua escolha do menu: ")
+                                if menu == "0":
+                                    print("0 - sair")
+                                    print("1 - adicionar loja")
+                                    print("2 - remover loja")
+                                    print("3 - imprimir loja")
+                                    print("4 - editar loja")
+                                    cardapio = input("Faça escolha do cardapio: ")
                             while produto not in lojas[nomeloja]:
                                 quantidade1 = int(input("Digite a quantidade de produto: "))
                                 preco = float(input("Digite um preço por unidade para o produto: "))
@@ -269,8 +281,9 @@ while cardapio != "0":
                     if menu == "2":
                         while menu == "2":
                             produto = input("Digite um produto a ser removido: ")
-                            if produto in estoque:
-                                del[lojas[nomeloja]]
+                            if produto in lojas[nomeloja]:
+                                del lojas[nomeloja][produto]
+                                firebase.delete("Estoque/{0}".format(nomeloja),produto)
                                 print("Produto {0} deletado.".format(produto))
                                 print("0 - sair")
                                 print("1 - adicionar item")
@@ -278,6 +291,12 @@ while cardapio != "0":
                                 print("3 - alterar item")
                                 print("4 - imprimir estoque")
                                 menu = input("Faça sua escolha do menu: ")
+                                print("0 - sair")
+                                print("1 - adicionar loja")
+                                print("2 - remover loja")
+                                print("3 - imprimir loja")
+                                print("4 - editar loja")
+                                cardapio = input("Faça escolha do cardapio: ")
                             else:
                                 print("Elemento não encontrado")
                                 print("0 - sair")
@@ -369,7 +388,8 @@ while cardapio != "0":
     if cardapio == "0":
         print("Até mais")
     
-    firebase.patch(nomeloja, lojas[nomeloja])
+firebase.patch("/Estoque", lojas)
+
 
         
                 
@@ -381,3 +401,8 @@ while cardapio != "0":
             
         
     
+
+    
+    
+
+
